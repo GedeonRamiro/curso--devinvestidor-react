@@ -19,7 +19,7 @@ const TaskListTableView = ({ tasks }) => {
               <TableCell>Situação</TableCell>
               <TableCell>Descrição</TableCell>
               <TableCell>Responsável</TableCell>
-              <TableCell width="150" align="center">Açõesss</TableCell>
+              <TableCell width="150" align="center">Ações</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
