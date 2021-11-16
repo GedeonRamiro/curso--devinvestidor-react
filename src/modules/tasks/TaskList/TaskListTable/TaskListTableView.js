@@ -1,4 +1,5 @@
 import Paper from "@material-ui/core/Paper";
+import Chip from '@material-ui/core/Chip';
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -7,8 +8,18 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import EmptyBox from '_common/lotties/EmptyBox';
 import LoadingSpinner from '_common/lotties/LoadingSpinner';
+import { TASK_STATUS } from '_common/constants/common.constants';
 
 const TaskListTableView = ({ tasks }) => {
+
+  const renderStatusChip = (status) => {
+    switch (status) {
+      case TASK_STATUS.OPEN:
+        return <Chip size="small" label="Aberta" color="primary" />;
+      default:
+        return <Chip size="small" label="Fechada" />;
+    }
+  };
 
     return (
     <>
@@ -33,7 +44,7 @@ const TaskListTableView = ({ tasks }) => {
                   <TableCell component="th" scope="row">
                     {task.description}
                   </TableCell>
-                  <TableCell>{task.status}</TableCell>
+                  <TableCell>{renderStatusChip(task.status)}</TableCell>
                   <TableCell>{task.responsible.name}</TableCell>
                   <TableCell padding="none" align="right">
                   </TableCell>

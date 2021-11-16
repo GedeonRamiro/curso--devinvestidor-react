@@ -1,12 +1,16 @@
 import TaskListTableView from "./TaskListTableView"
 import { useParams } from 'react-router'
 import TaskService from "modules/tasks/services/task.services"
-import { useEffect } from 'react'
+import { useEffect, useContext, useState} from 'react'
+import { TaskListContext } from '../context/TaskListContext'
 
 
 const TaskListTable = () => {
 
     const { status } = useParams()
+
+    const { setTasks, tasks } = useContext(TaskListContext)
+    const [filteredTasks, setFilteredTasks] = useState(null);
    
     useEffect(() => {
 
@@ -15,13 +19,14 @@ const TaskListTable = () => {
                 data : { body } 
             } = await TaskService.getByStatus(status)
 
-            console.log({ body })
+            setTasks(body)
+            setFilteredTasks(body)
         }
         fetchTasks()
     }, [status])
   
     return (
-       <TaskListTableView />
+       <TaskListTableView tasks={filteredTasks} />
     )
 }
 
