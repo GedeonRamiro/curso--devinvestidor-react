@@ -9,7 +9,7 @@ const TaskListTable = () => {
 
     const { status } = useParams()
 
-    const { setTasks, tasks } = useContext(TaskListContext)
+    const { tasks, setTasks, filter } = useContext(TaskListContext)
     const [filteredTasks, setFilteredTasks] = useState(null);
    
     useEffect(() => {
@@ -22,8 +22,28 @@ const TaskListTable = () => {
             setTasks(body)
             setFilteredTasks(body)
         }
+
         fetchTasks()
-    }, [status])
+        return () => {
+            setTasks(null)
+            setFilteredTasks(null)
+        }
+
+    }, [status, setTasks])
+
+    useEffect(() => {
+
+        if(tasks){
+            const result = tasks.filter(
+                (task) => 
+                task.description.toLowerCase().includes(filter.toLowerCase()) ||
+                task.responsible.name.toLowerCase().includes(filter.toLowerCase()) 
+            )
+
+            setFilteredTasks(result)
+        }
+
+    },[filter, tasks])
   
     return (
        <TaskListTableView tasks={filteredTasks} />
