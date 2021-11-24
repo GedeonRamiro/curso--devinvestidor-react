@@ -1,6 +1,6 @@
 import TaskListTableView from "./TaskListTableView"
 import { useParams } from 'react-router'
-import TaskService from "modules/tasks/services/task.services"
+import TaskService from "modules/tasks/services/task.service"
 import { useEffect, useContext, useState} from 'react'
 import { TaskListContext } from '../context/TaskListContext'
 
