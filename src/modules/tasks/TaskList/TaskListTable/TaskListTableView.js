@@ -8,12 +8,13 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
+import ConfirmationDialog from '_common/components/ConfirmationDialog';
 import TableRow from "@material-ui/core/TableRow";
 import EmptyBox from '_common/lotties/EmptyBox';
 import LoadingSpinner from '_common/lotties/LoadingSpinner';
 import { TASK_STATUS } from '_common/constants/common.constants';
 
-const TaskListTableView = ({ tasks, handleEdit, setTaskDelete}) => {
+const TaskListTableView = ({ tasks, handleEdit, taskDelete, setTaskDelete, handleDeleteConfirmation}) => {
 
   const renderStatusChip = (status) => {
     switch (status) {
@@ -64,6 +65,14 @@ const TaskListTableView = ({ tasks, handleEdit, setTaskDelete}) => {
       </TableContainer>
     {!tasks && <LoadingSpinner />}
     {tasks && !tasks.length && <EmptyBox />}
+    {taskDelete && (
+        <ConfirmationDialog
+          title="Excluir Tarefa"
+          text={`Tem certeza que deseja excluir a tarefa ${taskDelete.description}?`}
+          handleClose={() => setTaskDelete(null)}
+          handleConfirmation={handleDeleteConfirmation}
+        />
+      )}
     </>
     )
 }
