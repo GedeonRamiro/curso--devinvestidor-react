@@ -9,7 +9,7 @@ const TaskListTable = () => {
 
     const { status } = useParams()
 
-    const { tasks, setTasks, filter } = useContext(TaskListContext)
+    const { tasks, setTasks, filter, setTaskDialog } = useContext(TaskListContext)
     const [filteredTasks, setFilteredTasks] = useState(null);
    
     useEffect(() => {
@@ -44,9 +44,13 @@ const TaskListTable = () => {
         }
 
     },[filter, tasks])
+
+    const handleEdit = (task) => {
+        setTaskDialog({ open: true, task: {...task, responsible: task.responsible._id} })
+    }
   
     return (
-       <TaskListTableView tasks={filteredTasks} />
+       <TaskListTableView tasks={filteredTasks} {...{handleEdit}} />
     )
 }
 

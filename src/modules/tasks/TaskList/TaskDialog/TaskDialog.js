@@ -7,9 +7,10 @@ import TaskService from 'modules/tasks/services/task.service';
 import useSnackbar from '_common/hooks/useSnackbar';
 import { TaskListContext } from '../context/TaskListContext';
 
+
 const TaskDialog = () => {
-  const { setTasks, setTaskDialog } = useContext(TaskListContext);
-  const { snackbarSuccess } = useSnackbar();
+  const { tasks, setTasks, taskDialog: taskDialogState, setTaskDialog } = useContext(TaskListContext);
+  const { snackbarSuccess, snackbar } = useSnackbar();
   const [responsibles, setresponsibles] = useState([]);
 
   useEffect(() => {
@@ -38,23 +39,41 @@ const TaskDialog = () => {
 
   const onSubmit = async (values, { setSubmitting }) => {
     try {
-      const {
-        data: { body }
-      } = await TaskService.post(values);
+      if(values._id){
+        const {
+          data: { body }
+        } = await TaskService.put(values);
+        updateTasksContext(body);
+      } else{
+        const {
+          data: { body }
+        } = await TaskService.post(values);
+        updateTasksContext(body, true);
+      }
 
-      setTasks((prevtasks) => [...prevtasks, body]);
 
       snackbarSuccess();
       handleOnClose();
-    } catch (error) {
+    } catch ({ response: { data }}) {
+      snackbar(data.message);
     } finally {
       setSubmitting(false);
     }
   };
 
+  const updateTasksContext = (task, isNew) => {
+    if(isNew){
+      setTasks((prevtasks) => [...prevtasks, task]);
+    } else {
+      const updatedTasks = tasks.map((prevTask) => (prevTask._id === task._id ? task : prevTask));
+      setTasks(updatedTasks);
+      // setTasks((prevTasks) => prevTasks.map((prevTask) => (prevTask._id === task._id ? task : prevTask)));
+    }
+  }
+
   const form = useFormik({
     validationSchema,
-    initialValues,
+    initialValues: taskDialogState.task || initialValues,
     onSubmit
   });
 

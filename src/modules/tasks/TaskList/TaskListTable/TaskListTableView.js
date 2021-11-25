@@ -1,6 +1,9 @@
 import Paper from "@material-ui/core/Paper";
 import Chip from '@material-ui/core/Chip';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
 import Table from "@material-ui/core/Table";
+import IconButton from '@material-ui/core/IconButton';
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
@@ -10,7 +13,7 @@ import EmptyBox from '_common/lotties/EmptyBox';
 import LoadingSpinner from '_common/lotties/LoadingSpinner';
 import { TASK_STATUS } from '_common/constants/common.constants';
 
-const TaskListTableView = ({ tasks }) => {
+const TaskListTableView = ({ tasks, handleEdit, setTaskDelete}) => {
 
   const renderStatusChip = (status) => {
     switch (status) {
@@ -47,6 +50,12 @@ const TaskListTableView = ({ tasks }) => {
                   <TableCell>{renderStatusChip(task.status)}</TableCell>
                   <TableCell>{task.responsible.name}</TableCell>
                   <TableCell padding="none" align="right">
+                    <IconButton onClick={() => handleEdit(task)}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton onClick={() => setTaskDelete(task)}>
+                        <DeleteIcon />
+                      </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
